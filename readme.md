@@ -1,4 +1,4 @@
-
+[
 Node.js
 MariaDB
 Arduino
@@ -106,4 +106,4 @@ monitoramento-agua/
 ├── server.js          # Backend (Node.js)
 ├── banco-mariadb.sql  # Script SQL do banco
 ├── .env.example       # Modelo de configuração
-└── package.json       # Dependências
+└── package.json       # Dependências](https://github.com/jaksonsilva2541/arduino.git)
