@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS arduino;
+
+USE arduino;
+
+CREATE TABLE IF NOT EXISTS niveis_agua (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nivel FLOAT NOT NULL,
+  data_hora DATETIME NOT NULL
+);
