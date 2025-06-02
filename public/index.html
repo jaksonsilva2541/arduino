@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nível da Água em Tempo Real</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background: #f0f8ff;
+      color: #004080;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.5em;
+    }
+    #nivel {
+      font-size: 5em;
+      margin: 20px 0;
+      font-weight: bold;
+      color: #007bff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    #status {
+      margin: 10px 0;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Monitoramento de Nível de Água</h1>
+    
+    <div id="status">Conectando ao servidor...</div>
+    
+    <h2>Nível Atual</h2>
+    <div id="nivel">0 cm</div>
+    
+    <h2>Histórico (últimas 100 medições)</h2>
+    <table id="historico">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nível (cm)</th>
+          <th>Data/Hora</th>
+        </tr>
+      </thead>
+      <tbody id="historico-body">
+        <!-- Dados serão inseridos aqui via JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const nivelDiv = document.getElementById('nivel');
+    const statusDiv = document.getElementById('status');
+    const historicoBody = document.getElementById('historico-body');
+    
+    // Atualiza o status da conexão
+    socket.on('connect', () => {
+      statusDiv.textContent = 'Conectado ao servidor';
+      statusDiv.style.color = 'green';
+      console.log('Conectado ao servidor Socket.IO');
+    });
+    
+    socket.on('disconnect', () => {
+      statusDiv.textContent = 'Desconectado do servidor - tentando reconectar...';
+      statusDiv.style.color = 'red';
+    });
+    
+    // Atualiza o nível em tempo real
+    socket.on('nivelAtualizado', (nivel) => {
+      nivelDiv.textContent = nivel.toFixed(1) + ' cm';
+      console.log('Nível atualizado:', nivel);
+    });
+    
+    // Carrega o histórico do banco de dados
+    async function carregarHistorico() {
+      try {
+        const response = await fetch('/api/historico');
+        const dados = await response.json();
+        
+        historicoBody.innerHTML = '';
+        
+        dados.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.id}</td>
+            <td>${item.nivel.toFixed(1)} cm</td>
+            <td>${new Date(item.data_hora).toLocaleString()}</td>
+          `;
+          historicoBody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Erro ao carregar histórico:', err);
+        historicoBody.innerHTML = '<tr><td colspan="3">Erro ao carregar dados</td></tr>';
+      }
+    }
+    
+    // Carrega o histórico inicial e atualiza a cada minuto
+    carregarHistorico();
+    setInterval(carregarHistorico, 60000);
+    
+    // Log de eventos para debug
+    socket.onAny((event, ...args) => {
+      console.log('Evento Socket.IO:', event, args);
+    });
+  </script>
+</body>
+</html>
