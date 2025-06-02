@@ -141,35 +141,6 @@ monitoramento-agua/
 
 ---
 
-## 🤝 Como Contribuir
 
-1. Faça um fork do projeto  
-2. Crie uma nova branch:  
-   ```bash
-   git checkout -b feature/nova-funcionalidade
-   ```
-3. Commit suas alterações:  
-   ```bash
-   git commit -m 'Adiciona nova funcionalidade'
-   ```
-4. Push para sua branch:  
-   ```bash
-   git push origin feature/nova-funcionalidade
-   ```
-5. Abra um Pull Request
 
----
-
-## 📜 Licença
-
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
-
----
-
-## 📞 Contato
-
-**Seu Nome**  
-📧 email@exemplo.com  
-🔗 [GitHub](https://github.com/seu-usuario)
-
-> Link do Projeto: [https://github.com/seu-usuario/monitoramento-agua](https://github.com/seu-usuario/monitoramento-agua)
+> Link do Projeto: [https://github.com/jaksonsilva2541/arduino.git](https://github.com/jaksonsilva2541/arduino.git)
